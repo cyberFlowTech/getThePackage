@@ -1,0 +1,1 @@
+/Users/apple/go/bin/go build -o getThePackage getThePackage.go
