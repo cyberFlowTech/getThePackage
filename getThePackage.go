@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	gojenkins "github.com/jenkins-x/golang-jenkins"
+	"strings"
 )
 
 const (
@@ -420,16 +421,21 @@ func download() {
 	packageName := os.Args[3]
 	rootPath := os.Args[4]
 
+
 	job, err := jenkins.GetJob(jobName)
 	if err != nil {
 		panic(err)
 	}
 	//fmt.Println("job:", job)
+	job.Url = strings.Replace(job.Url, "http://jenkins:8080", JENKINSURL, 1)
+	fmt.Println(job.Url)
 
 	build, err := jenkins.GetLastBuild(job)
 	if err != nil {
 		panic(err)
 	}
+
+	build.Url = strings.Replace(build.Url, "http://jenkins:8080", JENKINSURL, 1)
 
 	var output []byte
 	output, err = jenkins.GetBuildConsoleOutput(build)
@@ -473,18 +479,22 @@ func bothDownload() {
 	if err != nil {
 		panic(err)
 	}
-	//fmt.Println("job:", job)
+	job.Url = strings.Replace(job.Url, "http://jenkins:8080", JENKINSURL, 1)
+
+
 
 	build, err := jenkins.GetLastBuild(job)
 	if err != nil {
 		panic(err)
 	}
+	build.Url = strings.Replace(build.Url, "http://jenkins:8080", JENKINSURL, 1)
 
 	var output []byte
 	output, err = jenkins.GetBuildConsoleOutput(build)
 	if err != nil {
 		panic(err)
 	}
+
 
 	outputStr := string(output)
 
