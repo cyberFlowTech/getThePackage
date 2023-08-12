@@ -451,7 +451,7 @@ func download() {
 		return
 	}
 	filePath := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match[1])
-	cmd := fmt.Sprintf("wget -O %s/%s %s", rootPath, packageName, filePath)
+	cmd := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, packageName, filePath)
 
 	c := exec.Command("/bin/bash", "-c", cmd)
 	err = c.Run()
@@ -504,11 +504,12 @@ func bothDownload() {
 		return
 	}
 	filePath := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match[1])
-	cmd := fmt.Sprintf("wget -O %s/%s %s", rootPath, iosPackageName, filePath)
+	cmd := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, iosPackageName, filePath)
 
 	c := exec.Command("/bin/bash", "-c", cmd)
 	err = c.Run()
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
 
@@ -518,11 +519,12 @@ func bothDownload() {
 		return
 	}
 	filePath1 := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match1[1])
-	cmd1 := fmt.Sprintf("wget -O %s/%s %s", rootPath, androidPackageName, filePath1)
+	cmd1 := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, androidPackageName, filePath1)
 
 	c1 := exec.Command("/bin/bash", "-c", cmd1)
 	err = c1.Run()
 	if err != nil {
+		fmt.Println(err.Error())
 		panic(err)
 	}
 
