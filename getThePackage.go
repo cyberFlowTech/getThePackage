@@ -22,7 +22,7 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 	var command string
 	if kind == "appid" {
 		appID, _ := value.(string)
-		command = fmt.Sprintf("/usr/local/bin//usr/local/bin/gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
 	} else if kind == "versionCode" {
 		versionCode, _ := value.(int64)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\w+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
