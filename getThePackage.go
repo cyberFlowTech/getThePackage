@@ -18,7 +18,7 @@ const (
 )
 
 // 后续有需要替换的场景在这里拓展
-func Replace(kind string, value interface{}, filePath string, value2 string) {
+func Replace(kind string, value interface{}, filePath string) {
 	var command string
 	if kind == "appid" {
 		appID, _ := value.(string)
@@ -31,12 +31,10 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \".*\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
 	} else if kind == "android_package_name" {
 		androidPackageName, _ := value.(string)
-		iosBundleId := value2
-		// 只有非空且云打包模式才替换
-		origin := `"android_package_name" : ".*",\n"ios_bundle_id" : ".*",\n"isCloud" : true,`
-		after := `"android_package_name" : "%s",\n"ios_bundle_id" : "%s",\n"isCloud" : true,`
-		after1 := fmt.Sprintf(after, androidPackageName, iosBundleId)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/%s/%s/g' %s", origin, after1, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"android_package_name\" : \"com.sailfishpay.mime\",/\"android_package_name\" : \"%s\",/g' %s", androidPackageName, filePath)
+	} else if kind == "ios_bundle_id" {
+		iosBundleId, _ := value.(string)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"ios_bundle_id\" : \"com.mimo.uni.test\",/\"ios_bundle_id\" : \"%s\",/g' %s", iosBundleId, filePath)
 	} else if kind == "env" {
 		env := value.(string)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
@@ -70,18 +68,18 @@ func prepare() {
 	// 改为用正则匹配替换
 
 	// 后台API接口
-	Replace("env", env, baseUrlPath, "")
+	Replace("env", env, baseUrlPath)
 
 	// APPID
-	Replace("appid", appID, manifestPath, "")
+	Replace("appid", appID, manifestPath)
 	// 测试维护的版本名称
-	Replace("versionName", versionName, manifestPath, "")
+	Replace("versionName", versionName, manifestPath)
 	// 测试维护的版本编码
 	versionCode, _ := strconv.ParseInt(versionCodeStr, 10, 64)
-	Replace("versionCode", versionCode, manifestPath, "")
+	Replace("versionCode", versionCode, manifestPath)
 	// 云插件的安卓包名和ios基带名
-	Replace("android_package_name", androidPackageName, manifestPath, iosBundleID)
-
+	Replace("android_package_name", androidPackageName, manifestPath)
+	Replace("ios_bundle_id", iosBundleID, manifestPath)
 }
 
 // 调用jenkins的api获取日志并下载云打包好的文件
