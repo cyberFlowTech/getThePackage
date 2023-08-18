@@ -25,7 +25,7 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"appid\" : \".*\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
 	} else if kind == "versionCode" {
 		versionCode, _ := value.(int64)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\d+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : .*,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
 	} else if kind == "versionName" {
 		versionName, _ := value.(string)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \".*\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
