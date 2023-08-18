@@ -34,8 +34,8 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		iosBundleId := value2
 		// 只有非空且云打包模式才替换
 		origin := `
-		"android_package_name" : ".*?",
-		"ios_bundle_id" : ".*?",
+		"android_package_name" : ".*",
+		"ios_bundle_id" : ".*",
 		"isCloud" : true,
 `
 		after := `
