@@ -51,7 +51,7 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
-
+	fmt.Println("command:", command)
 	cmd := exec.Command("/bin/bash", "-c", command)
 	_, err := cmd.CombinedOutput()
 	if err != nil {
