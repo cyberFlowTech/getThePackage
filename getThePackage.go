@@ -33,10 +33,10 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		androidPackageName, _ := value.(string)
 		iosBundleId := value2
 		// 只有非空且云打包模式才替换
-		origin := `		"android_package_name" : ".*",
+		origin := `"android_package_name" : ".*",
 		"ios_bundle_id" : ".*",
 		"isCloud" : true,`
-		after := `		"android_package_name" : "%s",
+		after := `"android_package_name" : "%s",
 		"ios_bundle_id" : "%s",
 		"isCloud" : true,`
 		after1 := fmt.Sprintf(after, androidPackageName, iosBundleId)
