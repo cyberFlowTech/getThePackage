@@ -25,17 +25,17 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
 	} else if kind == "versionCode" {
 		versionCode, _ := value.(int64)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\w+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\S,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
 	} else if kind == "versionName" {
 		versionName, _ := value.(string)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \"\\S\",/\"versionCode\" : \"%s\",/g' %s", versionName, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \"\\S\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
 	} else if kind == "android_package_name" {
 		androidPackageName, _ := value.(string)
 		iosBundleId := value2
 		// 只有非空且云打包模式才替换
 		origin := `
 		"android_package_name" : ".*?",
-		"ios_bundle_id" : .*?",
+		"ios_bundle_id" : ".*?",
 		"isCloud" : true,
 `
 		after := `
