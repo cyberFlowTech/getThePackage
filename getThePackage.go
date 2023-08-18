@@ -22,13 +22,13 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 	var command string
 	if kind == "appid" {
 		appID, _ := value.(string)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"appid\" : \"\\.\\*\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
 	} else if kind == "versionCode" {
 		versionCode, _ := value.(int64)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\S,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\d+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
 	} else if kind == "versionName" {
 		versionName, _ := value.(string)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \"\\S\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \"\\.\\*\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
 	} else if kind == "android_package_name" {
 		androidPackageName, _ := value.(string)
 		iosBundleId := value2
