@@ -45,10 +45,9 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 `
 		after1 := fmt.Sprintf(after, androidPackageName, iosBundleId)
 		command = fmt.Sprintf("gsed -E -i 's/%s/%s/g' %s", origin, after1, filePath)
-	} else if kind == "test" {
-		command = fmt.Sprintf("gsed -E -i 's/let PROD = \\w+/let PROD = false/g' %s", filePath)
-	} else if kind == "prod" {
-		command = fmt.Sprintf("gsed -E -i 's/let PROD = \\w+/let PROD = true/g' %s", filePath)
+	} else if kind == "env" {
+		env := value.(string)
+		command = fmt.Sprintf("gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
@@ -79,7 +78,7 @@ func prepare() {
 	// 改为用正则匹配替换
 
 	// 后台API接口
-	Replace(env, "", baseUrlPath, "")
+	Replace("env", env, baseUrlPath, "")
 
 	// APPID
 	Replace("appid", appID, manifestPath, "")
