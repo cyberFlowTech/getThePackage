@@ -22,13 +22,13 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 	var command string
 	if kind == "appid" {
 		appID, _ := value.(string)
-		command = fmt.Sprintf("gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
+		command = fmt.Sprintf("/usr/local/bin//usr/local/bin/gsed -E -i 's/\"appid\" : \"\\S\",/\"appid\" : \"%s\",/g' %s", appID, filePath)
 	} else if kind == "versionCode" {
 		versionCode, _ := value.(int64)
-		command = fmt.Sprintf("gsed -E -i 's/\"versionCode\" : \\w+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionCode\" : \\w+,/\"versionCode\" : %d,/g' %s", versionCode, filePath)
 	} else if kind == "versionName" {
 		versionName, _ := value.(string)
-		command = fmt.Sprintf("gsed -E -i 's/\"versionName\" : \"\\S\",/\"versionCode\" : \"%s\",/g' %s", versionName, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \"\\S\",/\"versionCode\" : \"%s\",/g' %s", versionName, filePath)
 	} else if kind == "android_package_name" {
 		androidPackageName, _ := value.(string)
 		iosBundleId := value2
@@ -44,10 +44,10 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 		"isCloud" : true,
 `
 		after1 := fmt.Sprintf(after, androidPackageName, iosBundleId)
-		command = fmt.Sprintf("gsed -E -i 's/%s/%s/g' %s", origin, after1, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/%s/%s/g' %s", origin, after1, filePath)
 	} else if kind == "env" {
 		env := value.(string)
-		command = fmt.Sprintf("gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
@@ -55,7 +55,7 @@ func Replace(kind string, value interface{}, filePath string, value2 string) {
 	cmd := exec.Command("/bin/bash", "-c", command)
 	_, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Println("gsed config err:", err.Error())
+		fmt.Println("/usr/local/bin/gsed config err:", err.Error())
 		panic(err)
 	}
 }
