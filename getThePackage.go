@@ -38,6 +38,8 @@ func Replace(kind string, value interface{}, filePath string) {
 	} else if kind == "env" {
 		env := value.(string)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
+	} else if kind == "testhost" {
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/mimo-test/mimo-test123/g' %s", filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
@@ -69,6 +71,7 @@ func prepare() {
 
 	// 后台API接口
 	Replace("env", env, baseUrlPath)
+	Replace("testhost", " ", baseUrlPath)
 
 	// APPID
 	Replace("appid", appID, manifestPath)
@@ -80,6 +83,7 @@ func prepare() {
 	// 云插件的安卓包名和ios基带名
 	Replace("android_package_name", androidPackageName, manifestPath)
 	Replace("ios_bundle_id", iosBundleID, manifestPath)
+
 }
 
 // 调用jenkins的api获取日志并下载云打包好的文件
