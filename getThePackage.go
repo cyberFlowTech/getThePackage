@@ -71,7 +71,7 @@ func prepare() {
 
 	// 后台API接口
 	Replace("env", env, baseUrlPath)
-	Replace("testhost", " ", baseUrlPath)
+	// Replace("testhost", " ", baseUrlPath)
 
 	// APPID
 	Replace("appid", appID, manifestPath)
