@@ -105,14 +105,14 @@ func bothDownload() {
 
 	// 基座包直接移动到文件目录
 	if isCustom == "true" {
-		cmd := fmt.Sprintf("mv /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/android_debug.apk %s/%sDebug.apk", rootPath, branch)
+		cmd := fmt.Sprintf("cp /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/android_debug.apk %s/%sDebug.apk", rootPath, branch)
 		c := exec.Command("/bin/bash", "-c", cmd)
 		err := c.Run()
 		if err != nil {
 			fmt.Println(err.Error())
 			panic(err)
 		}
-		cmd1 := fmt.Sprintf("mv /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/iOS_debug.ipa %s/%sDebug.ipa", rootPath, branch)
+		cmd1 := fmt.Sprintf("cp /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/iOS_debug.ipa %s/%sDebug.ipa", rootPath, branch)
 		c1 := exec.Command("/bin/bash", "-c", cmd1)
 		err1 := c1.Run()
 		if err1 != nil {
