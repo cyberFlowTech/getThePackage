@@ -100,55 +100,76 @@ func bothDownload() {
 	androidPackageName := os.Args[3]
 	iosPackageName := os.Args[4]
 	rootPath := os.Args[5]
+	isCustom := os.Args[6]
+	branch := os.Args[7]
 
-	job, err := jenkins.GetJob(jobName)
-	if err != nil {
-		panic(err)
-	}
-	job.Url = strings.Replace(job.Url, "http://jenkins:8080", JENKINSURL, 1)
+	// 基座包直接移动到文件目录
+	if isCustom == "true" {
+		cmd := fmt.Sprintf("mv /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/android_debug.apk %s/%sDebug.apk", rootPath, branch)
+		c := exec.Command("/bin/bash", "-c", cmd)
+		err := c.Run()
+		if err != nil {
+			fmt.Println(err.Error())
+			panic(err)
+		}
+		cmd1 := fmt.Sprintf("mv /Users/apple/Documents/git/jenkins/workspace/test_mimo_uniapp_pack/unpackage/debug/iOS_debug.ipa %s/%sDebug.ipa", rootPath, branch)
+		c1 := exec.Command("/bin/bash", "-c", cmd1)
+		err1 := c1.Run()
+		if err1 != nil {
+			fmt.Println(err1.Error())
+			panic(err1)
+		}
 
-	build, err := jenkins.GetLastBuild(job)
-	if err != nil {
-		panic(err)
-	}
-	build.Url = strings.Replace(build.Url, "http://jenkins:8080", JENKINSURL, 1)
+	} else {
+		job, err := jenkins.GetJob(jobName)
+		if err != nil {
+			panic(err)
+		}
+		job.Url = strings.Replace(job.Url, "http://jenkins:8080", JENKINSURL, 1)
 
-	var output []byte
-	output, err = jenkins.GetBuildConsoleOutput(build)
-	if err != nil {
-		panic(err)
-	}
+		build, err := jenkins.GetLastBuild(job)
+		if err != nil {
+			panic(err)
+		}
+		build.Url = strings.Replace(build.Url, "http://jenkins:8080", JENKINSURL, 1)
 
-	outputStr := string(output)
+		var output []byte
+		output, err = jenkins.GetBuildConsoleOutput(build)
+		if err != nil {
+			panic(err)
+		}
 
-	reg, _ := regexp.Compile(`.*iOS Appstore 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
-	match := reg.FindStringSubmatch(outputStr)
-	if len(match) != 2 {
-		return
-	}
-	filePath := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match[1])
-	cmd := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, iosPackageName, filePath)
+		outputStr := string(output)
 
-	c := exec.Command("/bin/bash", "-c", cmd)
-	err = c.Run()
-	if err != nil {
-		fmt.Println(err.Error())
-		panic(err)
-	}
+		reg, _ := regexp.Compile(`.*iOS Appstore 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
+		match := reg.FindStringSubmatch(outputStr)
+		if len(match) != 2 {
+			return
+		}
+		filePath := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match[1])
+		cmd := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, iosPackageName, filePath)
 
-	reg1, _ := regexp.Compile(`.*Android自有证书 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
-	match1 := reg1.FindStringSubmatch(outputStr)
-	if len(match1) != 2 {
-		return
-	}
-	filePath1 := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match1[1])
-	cmd1 := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, androidPackageName, filePath1)
+		c := exec.Command("/bin/bash", "-c", cmd)
+		err = c.Run()
+		if err != nil {
+			fmt.Println(err.Error())
+			panic(err)
+		}
 
-	c1 := exec.Command("/bin/bash", "-c", cmd1)
-	err = c1.Run()
-	if err != nil {
-		fmt.Println(err.Error())
-		panic(err)
+		reg1, _ := regexp.Compile(`.*Android自有证书 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
+		match1 := reg1.FindStringSubmatch(outputStr)
+		if len(match1) != 2 {
+			return
+		}
+		filePath1 := fmt.Sprintf("https://ide.dcloud.net.cn/build/download/%s", match1[1])
+		cmd1 := fmt.Sprintf("/usr/local/bin/wget -O %s/%s %s", rootPath, androidPackageName, filePath1)
+
+		c1 := exec.Command("/bin/bash", "-c", cmd1)
+		err = c1.Run()
+		if err != nil {
+			fmt.Println(err.Error())
+			panic(err)
+		}
 	}
 
 }
