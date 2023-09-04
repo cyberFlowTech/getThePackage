@@ -39,7 +39,7 @@ func Replace(kind string, value interface{}, filePath string) {
 		env := value.(string)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
 	} else if kind == "testhost" {
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/mimo-test/mimo-test123/g' %s", filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/http:\\/\\/tt.mimelabs.xyz:8081/https:\\/\\/mimo-dev.mimo.immo/g' %s", filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
@@ -71,7 +71,7 @@ func prepare() {
 
 	// 后台API接口
 	Replace("env", env, baseUrlPath)
-	// Replace("testhost", " ", baseUrlPath)
+	Replace("testhost", " ", baseUrlPath)
 
 	// APPID
 	Replace("appid", appID, manifestPath)
