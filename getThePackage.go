@@ -66,7 +66,7 @@ func prepare() {
 	versionName := os.Args[6]
 	versionCodeStr := os.Args[7]
 	rootPath := os.Args[8]
-	targetSDKVersion := os.Args[9]
+	targetSDKVersionStr := os.Args[9]
 
 	baseUrlPath := fmt.Sprintf("%s/common/const/baseUrl.const.js", rootPath)
 	manifestPath := fmt.Sprintf("%s/manifest.json", rootPath)
@@ -88,6 +88,7 @@ func prepare() {
 	Replace("android_package_name", androidPackageName, manifestPath)
 	Replace("ios_bundle_id", iosBundleID, manifestPath)
 	// sdk
+	targetSDKVersion, _ := strconv.ParseInt(targetSDKVersionStr, 10, 64)
 	Replace("sdk", targetSDKVersion, manifestPath)
 
 }
