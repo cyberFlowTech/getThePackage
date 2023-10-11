@@ -31,7 +31,7 @@ func Replace(kind string, value interface{}, filePath string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"versionName\" : \".*\",/\"versionName\" : \"%s\",/g' %s", versionName, filePath)
 	} else if kind == "android_package_name" {
 		androidPackageName, _ := value.(string)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"android_package_name\" : \"com.sailfishpay.mime\",/\"android_package_name\" : \"%s\",/g' %s", androidPackageName, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"android_package_name\" : \".*?\",/\"android_package_name\" : \"%s\",/g' %s", androidPackageName, filePath)
 	} else if kind == "ios_bundle_id" {
 		iosBundleId, _ := value.(string)
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"ios_bundle_id\" : \"com.mimo.uni.test\",/\"ios_bundle_id\" : \"%s\",/g' %s", iosBundleId, filePath)
