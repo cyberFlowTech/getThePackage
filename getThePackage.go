@@ -40,6 +40,9 @@ func Replace(kind string, value interface{}, filePath string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/let PROD = \\w+/let PROD = %s/g' %s", env, filePath)
 	} else if kind == "testhost" {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/http:\\/\\/tt.mimelabs.xyz:8081/https:\\/\\/mimo-dev.mimo.immo/g' %s", filePath)
+	} else if kind == "sdk" {
+		targetSDKVersion := value.(int64)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"targetSdkVersion\" : .*,/\"targetSdkVersion\" : %d,/g' %s", targetSDKVersion, filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
@@ -53,7 +56,7 @@ func Replace(kind string, value interface{}, filePath string) {
 }
 
 // 动态修改manifest.json和baseurl.json
-// go run main.go [prepare] env AndroidPackageName IosBundleID AppID VersionName VersionCode RootPath
+// go run main.go [prepare] env AndroidPackageName IosBundleID AppID VersionName VersionCode RootPath TargetSDKVersion
 func prepare() {
 
 	env := os.Args[2]
@@ -63,6 +66,7 @@ func prepare() {
 	versionName := os.Args[6]
 	versionCodeStr := os.Args[7]
 	rootPath := os.Args[8]
+	targetSDKVersion := os.Args[9]
 
 	baseUrlPath := fmt.Sprintf("%s/common/const/baseUrl.const.js", rootPath)
 	manifestPath := fmt.Sprintf("%s/manifest.json", rootPath)
@@ -83,6 +87,8 @@ func prepare() {
 	// 云插件的安卓包名和ios基带名
 	Replace("android_package_name", androidPackageName, manifestPath)
 	Replace("ios_bundle_id", iosBundleID, manifestPath)
+	// sdk
+	Replace("sdk", targetSDKVersion, manifestPath)
 
 }
 
