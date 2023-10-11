@@ -42,7 +42,7 @@ func Replace(kind string, value interface{}, filePath string) {
 		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/http:\\/\\/tt.mimelabs.xyz:8081/https:\\/\\/mimo-dev.mimo.immo/g' %s", filePath)
 	} else if kind == "sdk" {
 		targetSDKVersion := value.(int64)
-		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"targetSdkVersion\" : .*\\s/\"targetSdkVersion\" : %d\\s/g' %s", targetSDKVersion, filePath)
+		command = fmt.Sprintf("/usr/local/bin/gsed -E -i 's/\"targetSdkVersion\" : .* /\"targetSdkVersion\" : %d /g' %s", targetSDKVersion, filePath)
 	} else {
 		fmt.Println("要替换的类型有错误,请检查代码!")
 	}
