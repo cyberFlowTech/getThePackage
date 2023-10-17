@@ -163,7 +163,7 @@ func bothDownload() {
 			panic(err)
 		}
 
-		reg1, _ := regexp.Compile(`.*Android自有证书 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
+		reg1, _ := regexp.Compile(`.*Android自有证书.*? 下载地址: https://ide.dcloud.net.cn/build/download/(.*) （注意该地址为临.*`)
 		match1 := reg1.FindStringSubmatch(outputStr)
 		if len(match1) != 2 {
 			return
